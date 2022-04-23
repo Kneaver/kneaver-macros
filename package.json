@@ -1,0 +1,48 @@
+{
+  "name": "kneaver-macros",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/js/index.ts",
+  "scripts": {
+    "start": "webpack serve --mode development --hot",
+    "build": "webpack --mode production",
+    "test": "jest"
+  },
+  "config": {
+    "link": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kneaver/kneaver-macros.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kneaver/kneaver-macros/issues"
+  },
+  "homepage": "https://github.com/Kneaver/kneaver-macros#readme",
+  "dependencies": {
+    "autobind-decorator": "^2.4.0",
+    "kneaver-lib": "file:../kneaver-lib",
+    "kneaver-stdjs": "file:../kneaver-stdjs",
+    "prop-types": "^15.8.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.13",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-router-dom": "^5.3.3",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.4.7",
+    "kneaver-dot": "file:../kneaver-dot",
+    "kneaver-react-helpers": "file:../kneaver-react-helpers/types",
+    "kneaver-ui-sdk": "file:../kneaver-ui-sdk/types",
+    "ts-jest": "^27.1.3",
+    "ts-loader": "^9.2.6",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.3"
+  }
+}
