@@ -5,6 +5,7 @@ import * as KNVTrace from 'kneaver-stdjs/trace';
 function Fct()
 {
   const T = new KNVTrace.Proc("Fct").D();
+  alert( "Hello World from Fct");
   T.Exit();
 }
 
@@ -19,7 +20,7 @@ export default function factory()
   T.Exit();
   return {
     actions: [
-      Fct,
+      { name: "Fct", code: Fct, len : 0 },
     ],
   }
 }
