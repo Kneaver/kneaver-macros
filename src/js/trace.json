@@ -1,3 +1,26 @@
 {
-  "HTMLToMDAction": true
+  "SplitItem": true,
+  "splitBody": true,
+  "PushChildren": true,
+  "HTMLToMDAction": true,
+  "MakeAnchorAsParts": false,
+  "CommitPX": false,
+  "ParseMarkup": false,
+  "ReParse": false,
+  "AddToPX0": false,
+  "ATXHeaders.testBlock": false,
+  "ParseLineChunk": false,
+  "codeFence.testBlock": false,
+  "ParseCr": false,
+  "HTML.AddHTMLMarkupPart": false,
+  "HTML.testHTMLMarkup": false,
+  "indentedCode.testBlock": false,
+  "li10.testBlock": false,
+  "li20.testBlock": false,
+  "liContinuation.testBlock": false,
+  "LineStructure": false,
+  "Lists:StartOrResume": false,
+  "ProcessTextualContent": false,
+  "ParsePOS": false,
+  "ParsePOSToWikiNames": false
 }

@@ -16,6 +16,8 @@ function HTMLToMDAction( id, api)
   {
     const bufferOut = HTMLToMD( item.body, id);
     T.log( "bufferOut", bufferOut);
+    if ( bufferOut)
+      api.UpdateItem( id, { body: bufferOut});
   }
 
   T.Exit();

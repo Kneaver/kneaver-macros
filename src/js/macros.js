@@ -1,51 +1,45 @@
 
 const { IsSet, IsNull, invariant } = require('kneaver-stdjs/KNVBase');
 const KNVTrace = require('kneaver-stdjs/trace');
+import HelperSame from "kneaver-nlp/MarkDownParser-HelperSame";
 
-const { splitBody } = require('kneaver-ui-sdk');
+const { splitBody } = require('./SplitBody');
 
 // using redux-thunk
-export function SplitItem (id, Actions) {
+export function SplitItem( id, API, Schema) {
   const T = new KNVTrace.Proc("SplitItem")
-    .TVAR("Actions", Actions)
+    .TVAR( "id", id)
+    .TVAR( "API", API)
     .D();
 
-  return T.Return( (dispatch, getState) => {
-    const item = getState().items.findById(id);
-    const Chunked = splitBody(item.body);
-    // KNVTrace.log("SplitItem", Chunked);
-    const data = {
-      body: Chunked.body,
-    };
-    function CreateLink(data, Body) {
-      if (!data.children)
-        data.children = [];
-      const child = {
-        Body: Body,
-      }
-      data.children.push(child)
-      return child;
-    }
-    function AddLinks(data, Chunk) {
-      if (Chunk.children)
-        Chunk.children.forEach(child => {
-          AddLinks(CreateLink(data, child.body), child);
-        })
-    }
-    const PointTypeId = getState().items.Types.PointTypeId;
-    const RelatedLinkTypeId = getState().items.LinkTypes.relatedId;
-    AddLinks(data, Chunked);
-    BuildTree = (data, id) => data.children && Promise.all(data.children.map(
-        child => dispatch(Actions.CreateItem({ body: child.body, typeId: PointTypeId, linkTypeId: RelatedLinkTypeId, sourceId: id }))
-          .then(ret => BuildTree(child, ret.value.result))));
-    return BuildTree(data, id)
-    // .then(() => dispatch( Action.UpdateItem( id, { Body: data.body})));
-  })  // end object constructor
+
+  const item = API.findById(id);
+  const Chunked = splitBody( item.body);
+  T.log("SplitItem", Chunked);
+  function toMd( bodyIn)
+  {
+    let body = bodyIn.map( elt => elt.type?HelperSame( elt): toMd( elt.body)).join( "");
+    return body.replace( /&quot;/g,`"`); // .replace( /\n/g, "\n"+tabs);
+  }
+
+  const PointTypeId = Schema.Types.PointTypeId;
+  const RelatedLinkTypeId = Schema.LinkTypes.relatedId;
+  function BuildTree( data, id) 
+  {
+    T.log( 'BuildTree', id);
+    return data.children && Promise.all( data.children.map(
+      child => API.CreateItemAndLink({ body: toMd( child.body), typeId: PointTypeId, linkTypeId: RelatedLinkTypeId, sourceId: id })
+        .then(ret => BuildTree( child, ret.value.result))
+      )
+    );
+  };
+
+  return T.Return(BuildTree( Chunked, id).then(() => API.UpdateItem( id, { body: toMd( data.body)})));
 }  // end function block
 
 /*
-    // We can dispatch both plain object actions and other thunks,
-    // which lets us compose the asynchronous actions in a single flow.
+    // We can dispatch both plain object API and other thunks,
+    // which lets us compose the asynchronous API in a single flow.
 
     return dispatch(makeASandwichWithSecretSauce('My Grandma'))
       .then(() =>
